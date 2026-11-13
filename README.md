@@ -4,7 +4,7 @@ A small SwiftUI sample that removes the background of an image with Apple's Visi
 
 It uses a mask-based approach, so the result keeps the original image's dimensions and every subject stays in its original position. Only the pixels around the subjects become transparent.
 
-This is the sample project for **[this article](http://mzeeshan.me/blog/remove-image-background-vision-framework-swift)**, which explains the code step by step.
+This is the sample project for **[this article](https://mzeeshan.me/blog/remove-image-background-vision-framework-swift)**, which explains the code step by step.
 
 ## What it does
 
