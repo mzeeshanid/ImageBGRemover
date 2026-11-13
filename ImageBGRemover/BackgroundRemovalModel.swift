@@ -66,7 +66,8 @@ final class BackgroundRemovalModel {
                 let preview = ImageBackgroundRemover.removeBackground(from: previewSource, using: mask)
                 let full = ImageBackgroundRemover.removeBackground(from: source, using: mask)
                 guard let rendered = ImageRendering.cgImage(from: preview) else {
-                    throw BackgroundRemovalError.noSubjectFound
+                    // Vision already found a subject here; only the preview failed to render.
+                    throw BackgroundRemovalError.renderingFailed
                 }
                 let file = try ImageRendering.writePNG(full, named: "output")
                 return (rendered, file, full.extent.size)

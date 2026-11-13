@@ -9,6 +9,8 @@ nonisolated enum BackgroundRemovalError: LocalizedError {
     case noSubjectFound
     /// Vision couldn't analyse the image, as happens in the iOS Simulator.
     case analysisFailed(reason: String)
+    /// Vision found a subject, but Core Image couldn't render the mask or the masked image.
+    case renderingFailed
 
     var errorDescription: String? {
         switch self {
@@ -16,6 +18,8 @@ nonisolated enum BackgroundRemovalError: LocalizedError {
             "No subject was found in this image."
         case .analysisFailed(let reason):
             "The image couldn't be analysed. \(reason)"
+        case .renderingFailed:
+            "The result couldn't be rendered."
         }
     }
 }
@@ -29,8 +33,9 @@ nonisolated enum ImageBackgroundRemover {
     /// A greyscale mask for the image file at `url`: white over every subject Vision finds,
     /// black over the background. The mask has the pixel size of the upright image.
     ///
-    /// Prefer this when the image comes from a file. Vision reads the file itself, and finds
-    /// subjects that it can miss when it's handed the same image already decoded.
+    /// Vision reads the file itself here. On the sample photo this found both subjects, where
+    /// the same image handed over already decoded found only one. That is an observation from
+    /// one scene, not a rule: `subjectMask(for:)` is an equally supported input.
     static func subjectMask(forImageAt url: URL) throws -> CGImage {
         guard let image = CIImage(contentsOf: url, options: [.applyOrientationProperty: true]) else {
             throw BackgroundRemovalError.analysisFailed(reason: "The image file couldn't be read.")
@@ -53,7 +58,8 @@ nonisolated enum ImageBackgroundRemover {
               let result = CIContext().createCGImage(
                   mask, from: CGRect(origin: .zero, size: size), format: .L8, colorSpace: space
               ) else {
-            throw BackgroundRemovalError.noSubjectFound
+            // Vision already found a subject here; the mask itself just failed to render.
+            throw BackgroundRemovalError.renderingFailed
         }
         return result
     }
