@@ -1,5 +1,7 @@
 # ImageBGRemover
 
+[![Removing image backgrounds with the Vision framework](https://cdn.mzeeshan.me/assets/image_background_remover_article_cover_image_9ade0bc2b8.jpg)](https://mzeeshan.me/blog/remove-image-background-vision-framework-swift)
+
 A small SwiftUI sample that removes the background of an image with Apple's Vision framework and Core Image.
 
 It uses a mask-based approach, so the result keeps the original image's dimensions and every subject stays in its original position. Only the pixels around the subjects become transparent.
