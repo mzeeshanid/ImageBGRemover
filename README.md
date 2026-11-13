@@ -34,3 +34,7 @@ To try another image, replace `ImageBGRemover/input.jpg`.
 | `ImageBackgroundRemover.swift` | Makes the subject mask with Vision and applies it with Core Image |
 | `BackgroundRemovalModel.swift` | Loads the image, runs the removal off the main thread, writes the PNG |
 | `ContentView.swift` | The screen: image, checkerboard, buttons |
+
+## License
+
+MIT. See [LICENSE](LICENSE).
